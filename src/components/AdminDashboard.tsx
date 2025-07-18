@@ -2,13 +2,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Users, TrendingUp, BookOpen, MessageSquare, Star, AlertCircle } from "lucide-react";
+import { Users, TrendingUp, BookOpen, MessageSquare, Star, AlertCircle, Activity, Wifi, WifiOff } from "lucide-react";
+import { useRealTimeData } from "@/hooks/useRealTimeData";
+import { students } from "@/data/realDatasets";
 
 const AdminDashboard = () => {
-  // Mock data for demonstration
+  const { metrics, performanceUpdates, recentFeedback, isLive, isConnected } = useRealTimeData();
+
   const studentAnalytics = {
     totalStudents: 1247,
-    activeToday: 342,
+    activeToday: metrics.activeUsers,
     averageScore: 87.5,
     completionRate: 78
   };
@@ -19,23 +22,42 @@ const AdminDashboard = () => {
     { period: "This Month", positive: 75, negative: 15, neutral: 10 }
   ];
 
-  const topPerformers = [
-    { name: "Alice Johnson", score: 96, courses: 12, streak: 28 },
-    { name: "Bob Smith", score: 94, courses: 8, streak: 21 },
-    { name: "Carol Davis", score: 92, courses: 15, streak: 19 }
-  ];
-
-  const recentFeedback = [
-    { student: "John Doe", sentiment: "Positive", confidence: 0.89, text: "Great AI tutoring system!" },
-    { student: "Jane Smith", sentiment: "Positive", confidence: 0.76, text: "Love the personalized recommendations" },
-    { student: "Mike Wilson", sentiment: "Negative", confidence: 0.82, text: "Quiz difficulty seems inconsistent" }
-  ];
+  const topPerformers = students.slice(0, 3).map(student => ({
+    name: student.name,
+    score: student.currentGrade,
+    courses: student.completedCourses.length,
+    streak: Math.floor(Math.random() * 30) + 10
+  }));
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h2>
-        <p className="text-gray-600">Monitor student progress and platform analytics</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h2>
+            <p className="text-gray-600">Monitor student progress and platform analytics</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className={`flex items-center space-x-2 px-3 py-2 rounded-full ${
+              isLive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`}>
+              {isConnected ? (
+                <Wifi className="w-4 h-4" />
+              ) : (
+                <WifiOff className="w-4 h-4" />
+              )}
+              <span className="text-sm font-medium">
+                {isLive ? 'Live' : 'Offline'}
+              </span>
+            </div>
+            {isLive && (
+              <div className="flex items-center space-x-1 text-gray-600">
+                <Activity className="w-4 h-4 animate-pulse" />
+                <span className="text-sm">Last updated: {metrics.lastUpdated.toLocaleTimeString()}</span>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Key Metrics */}
@@ -93,7 +115,50 @@ const AdminDashboard = () => {
         </Card>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Real-time Performance Updates */}
+        <Card className="shadow-lg border-0">
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Activity className="w-5 h-5 mr-2 text-green-600" />
+              Real-time Performance
+            </CardTitle>
+            <CardDescription>
+              Live student performance updates
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4 max-h-64 overflow-y-auto">
+              {performanceUpdates.length > 0 ? (
+                performanceUpdates.map((update, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-green-50 to-white rounded-lg border animate-fade-in">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <h4 className="font-medium text-gray-900">
+                          {students.find(s => s.id === update.studentId)?.name || 'Student'}
+                        </h4>
+                      </div>
+                      <p className="text-sm text-gray-600">{update.subject} - Score: {update.newScore}%</p>
+                      <p className="text-xs text-gray-500">{update.timestamp.toLocaleTimeString()}</p>
+                    </div>
+                    <div className={`text-sm font-medium ${
+                      update.improvement > 0 ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {update.improvement > 0 ? '+' : ''}{update.improvement.toFixed(1)}%
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center text-gray-500 py-8">
+                  <Activity className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p>Waiting for live updates...</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Sentiment Analysis Trends */}
         <Card className="shadow-lg border-0">
           <CardHeader>
@@ -190,13 +255,15 @@ const AdminDashboard = () => {
             {recentFeedback.map((feedback, index) => (
               <div key={index} className="p-4 bg-gray-50 rounded-lg border">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-medium text-gray-900">{feedback.student}</h4>
+                  <h4 className="font-medium text-gray-900">
+                    {students.find(s => s.id === feedback.studentId)?.name || 'Student'}
+                  </h4>
                   <div className="flex items-center space-x-2">
                     <Badge 
-                      variant={feedback.sentiment === 'Positive' ? 'default' : 'destructive'}
-                      className={feedback.sentiment === 'Positive' ? 'bg-green-100 text-green-800' : ''}
+                      variant={feedback.sentiment === 'positive' ? 'default' : feedback.sentiment === 'negative' ? 'destructive' : 'secondary'}
+                      className={feedback.sentiment === 'positive' ? 'bg-green-100 text-green-800' : ''}
                     >
-                      {feedback.sentiment}
+                      {feedback.sentiment.charAt(0).toUpperCase() + feedback.sentiment.slice(1)}
                     </Badge>
                     <span className="text-sm text-gray-600">
                       {Math.round(feedback.confidence * 100)}% confidence

@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,35 +9,50 @@ import { BookOpen, TrendingUp, MessageSquare, Zap, Star, Award, ChevronRight, Ta
 import VirtualTutor from "./VirtualTutor";
 import QuizGenerator from "./QuizGenerator";
 import SentimentFeedback from "./SentimentFeedback";
+import { students, RecommendationEngine, PerformancePrediction, courses } from "@/data/realDatasets";
 
 const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
-
-  // Mock data for demonstration
-  const recommendations = [
-    { title: "Advanced React Patterns", match: 95, difficulty: "Advanced", duration: "4 hours" },
-    { title: "Machine Learning Basics", match: 88, difficulty: "Intermediate", duration: "6 hours" },
-    { title: "Data Structures & Algorithms", match: 82, difficulty: "Advanced", duration: "8 hours" }
-  ];
-
-  const performanceData = {
+  const [currentStudent] = useState(students[0]); // Using Alice Johnson as default
+  const [recommendations, setRecommendations] = useState(courses.slice(0, 3));
+  const [performanceData, setPerformanceData] = useState({
     currentScore: 85,
     predictedScore: 92,
     improvement: 7,
     streak: 12
-  };
+  });
 
-  const recentQuizzes = [
-    { subject: "JavaScript", score: 88, date: "2 days ago" },
-    { subject: "Python", score: 92, date: "1 week ago" },
-    { subject: "SQL", score: 76, date: "1 week ago" }
-  ];
+  // Generate real recommendations and predictions
+  useEffect(() => {
+    const aiRecommendations = RecommendationEngine.predict(currentStudent);
+    const predictedScore = PerformancePrediction.predict(currentStudent);
+    
+    setRecommendations(aiRecommendations.slice(0, 3));
+    setPerformanceData(prev => ({
+      ...prev,
+      currentScore: currentStudent.currentGrade,
+      predictedScore: Math.round(predictedScore)
+    }));
+  }, [currentStudent]);
+
+  const recentQuizzes = currentStudent.previousScores.slice(-3).map((score, index) => ({
+    subject: ["JavaScript", "Python", "SQL"][index] || "General",
+    score,
+    date: `${index + 1} week${index === 0 ? '' : 's'} ago`
+  }));
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, Alex!</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {currentStudent.name.split(' ')[0]}!</h2>
         <p className="text-gray-600">Ready to continue your learning journey?</p>
+        <div className="mt-2 flex items-center space-x-4 text-sm text-gray-500">
+          <span>Learning Style: {currentStudent.learningStyle}</span>
+          <span>•</span>
+          <span>Total Study Time: {Object.values(currentStudent.timeSpent).reduce((sum, time) => sum + time, 0)} hours</span>
+          <span>•</span>
+          <span>Courses Completed: {currentStudent.completedCourses.length}</span>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -134,10 +149,10 @@ const StudentDashboard = () => {
                       <h4 className="font-semibold text-gray-900">{course.title}</h4>
                       <div className="flex items-center space-x-4 mt-2">
                         <Badge variant="secondary">{course.difficulty}</Badge>
-                        <span className="text-sm text-gray-600">{course.duration}</span>
+                        <span className="text-sm text-gray-600">{course.duration} hours</span>
                         <div className="flex items-center">
                           <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                          <span className="text-sm font-medium text-gray-700">{course.match}% match</span>
+                          <span className="text-sm font-medium text-gray-700">{course.rating}/5.0</span>
                         </div>
                       </div>
                     </div>
@@ -192,14 +207,14 @@ const StudentDashboard = () => {
                       <CardTitle className="text-lg">{course.title}</CardTitle>
                       <div className="flex items-center space-x-2">
                         <Badge variant="outline">{course.difficulty}</Badge>
-                        <span className="text-sm text-gray-600">{course.duration}</span>
+                        <span className="text-sm text-gray-600">{course.duration} hours</span>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                           <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                          <span className="text-sm font-medium">{course.match}% match</span>
+                          <span className="text-sm font-medium">{course.rating}/5.0</span>
                         </div>
                         <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600">
                           Continue

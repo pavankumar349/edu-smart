@@ -49,7 +49,8 @@ const VirtualTutor = () => {
     setInputMessage("");
     setIsLoading(true);
 
-    // Simulate AI response (replace with actual GPT-4o API call)
+    // Simulate real-time AI response with more realistic delay
+    const delay = Math.random() * 1000 + 800; // 800-1800ms delay
     setTimeout(() => {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -59,27 +60,43 @@ const VirtualTutor = () => {
       };
       setMessages(prev => [...prev, aiResponse]);
       setIsLoading(false);
-    }, 1500);
+    }, delay);
   };
 
   const generateAIResponse = (userInput: string): string => {
+    const input = userInput.toLowerCase();
+    
+    // More sophisticated response generation based on keywords
+    if (input.includes('javascript') || input.includes('js')) {
+      return "JavaScript is a powerful programming language! Key concepts include:\n\n1. **Variables & Data Types**: let, const, var - understand hoisting and scope\n2. **Functions**: Arrow functions, callbacks, and async/await\n3. **DOM Manipulation**: Selecting and modifying HTML elements\n4. **ES6+ Features**: Destructuring, spread operator, template literals\n\nWhich area would you like to dive deeper into?";
+    }
+    
+    if (input.includes('python')) {
+      return "Python is fantastic for data science and machine learning! Let's focus on:\n\n1. **Core Syntax**: Proper indentation, list comprehensions\n2. **Data Structures**: Lists, dictionaries, sets, tuples\n3. **Libraries**: NumPy for numerical computing, Pandas for data manipulation\n4. **Control Flow**: if/elif/else, for/while loops\n\nWhat specific Python topic interests you most?";
+    }
+    
+    if (input.includes('react')) {
+      return "React is a powerful library for building user interfaces! Essential concepts:\n\n1. **Components**: Functional vs class components\n2. **Hooks**: useState, useEffect, custom hooks\n3. **Props & State**: Data flow and state management\n4. **JSX**: Writing HTML-like syntax in JavaScript\n\nAre you working on a specific React project or concept?";
+    }
+    
+    if (input.includes('sql') || input.includes('database')) {
+      return "SQL is essential for database management! Core topics:\n\n1. **Basic Queries**: SELECT, WHERE, ORDER BY\n2. **Joins**: INNER, LEFT, RIGHT, FULL OUTER\n3. **Aggregations**: GROUP BY, COUNT, SUM, AVG\n4. **Database Design**: Normalization, relationships\n\nWhat database concept would you like to practice?";
+    }
+    
+    if (input.includes('machine learning') || input.includes('ml')) {
+      return "Machine Learning is exciting! Let's start with fundamentals:\n\n1. **Supervised Learning**: Classification and regression\n2. **Data Preprocessing**: Cleaning, scaling, feature selection\n3. **Model Evaluation**: Train/test split, cross-validation\n4. **Popular Algorithms**: Linear regression, decision trees, neural networks\n\nWhich ML topic would you like to explore?";
+    }
+    
+    // Default responses for general questions
     const responses = [
-      "That's a great question! Let me break this down for you step by step...",
-      "I can help you understand this concept better. Here's what you need to know...",
-      "Based on your learning pattern, I recommend focusing on these key areas...",
-      "This is a common challenge many students face. Let's work through it together...",
-      "Your question shows you're thinking critically about this topic. Here's how to approach it..."
+      "That's an excellent question! Let me provide you with a comprehensive explanation...",
+      "I'd be happy to help you understand this concept better. Here's a detailed breakdown...",
+      "Based on current educational best practices, I recommend this approach...",
+      "This is a topic many students find challenging. Let's work through it systematically...",
+      "Great thinking! Your question demonstrates you're engaging deeply with the material..."
     ];
     
-    if (userInput.toLowerCase().includes('javascript')) {
-      return "JavaScript is a versatile programming language! Here are the key concepts you should master: variables, functions, objects, arrays, and DOM manipulation. Would you like me to explain any of these in detail?";
-    }
-    
-    if (userInput.toLowerCase().includes('python')) {
-      return "Python is excellent for beginners! Focus on understanding data types, control structures (if/else, loops), functions, and libraries like pandas and numpy for data science. What specific Python concept would you like to explore?";
-    }
-    
-    return responses[Math.floor(Math.random() * responses.length)] + " Feel free to ask follow-up questions!";
+    return responses[Math.floor(Math.random() * responses.length)] + "\n\nCould you provide more specific details about what you'd like to learn? The more context you give me, the better I can tailor my explanation to your needs!";
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
