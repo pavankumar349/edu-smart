@@ -49,7 +49,7 @@ export interface FeedbackData {
   category: 'course' | 'tutor' | 'platform' | 'quiz';
 }
 
-// Real course dataset
+// Real course dataset - Expanded with comprehensive curriculum
 export const courses: Course[] = [
   {
     id: 'cs101',
@@ -122,6 +122,279 @@ export const courses: Course[] = [
     prerequisites: [],
     skills: ['SQL', 'Database Design', 'Normalization', 'Query Optimization'],
     description: 'Learn database design principles and SQL query writing.'
+  },
+  // Additional Programming Courses
+  {
+    id: 'java201',
+    title: 'Java Programming Essentials',
+    category: 'Programming',
+    difficulty: 'Intermediate',
+    duration: 55,
+    rating: 4.6,
+    enrollments: 16430,
+    prerequisites: ['cs101'],
+    skills: ['Java', 'OOP', 'Spring Framework', 'JVM'],
+    description: 'Master Java programming with object-oriented principles and enterprise development.'
+  },
+  {
+    id: 'cpp301',
+    title: 'Advanced C++ Programming',
+    category: 'Programming',
+    difficulty: 'Advanced',
+    duration: 75,
+    rating: 4.7,
+    enrollments: 9240,
+    prerequisites: ['cs101'],
+    skills: ['C++', 'Memory Management', 'STL', 'Performance Optimization'],
+    description: 'Deep dive into C++ programming for systems and performance-critical applications.'
+  },
+  {
+    id: 'go101',
+    title: 'Go Programming for Backend',
+    category: 'Backend',
+    difficulty: 'Intermediate',
+    duration: 50,
+    rating: 4.8,
+    enrollments: 7890,
+    prerequisites: ['cs101'],
+    skills: ['Go', 'Concurrency', 'Microservices', 'REST APIs'],
+    description: 'Learn Go programming for building scalable backend systems and microservices.'
+  },
+  // Data Science & AI Courses
+  {
+    id: 'stats101',
+    title: 'Statistics for Data Science',
+    category: 'Data Science',
+    difficulty: 'Beginner',
+    duration: 42,
+    rating: 4.5,
+    enrollments: 13250,
+    prerequisites: [],
+    skills: ['Statistics', 'Probability', 'Hypothesis Testing', 'Data Visualization'],
+    description: 'Essential statistical concepts for data analysis and machine learning.'
+  },
+  {
+    id: 'dl401',
+    title: 'Deep Learning with PyTorch',
+    category: 'AI/ML',
+    difficulty: 'Advanced',
+    duration: 90,
+    rating: 4.9,
+    enrollments: 6750,
+    prerequisites: ['ml301', 'py201'],
+    skills: ['Deep Learning', 'Neural Networks', 'PyTorch', 'Computer Vision'],
+    description: 'Master deep learning techniques using PyTorch for advanced AI applications.'
+  },
+  {
+    id: 'nlp301',
+    title: 'Natural Language Processing',
+    category: 'AI/ML',
+    difficulty: 'Advanced',
+    duration: 65,
+    rating: 4.8,
+    enrollments: 5940,
+    prerequisites: ['ml301'],
+    skills: ['NLP', 'Text Processing', 'Transformers', 'BERT'],
+    description: 'Explore natural language processing techniques and modern transformer models.'
+  },
+  // Web Development Courses
+  {
+    id: 'html101',
+    title: 'HTML5 & CSS3 Fundamentals',
+    category: 'Web Development',
+    difficulty: 'Beginner',
+    duration: 30,
+    rating: 4.4,
+    enrollments: 22100,
+    prerequisites: [],
+    skills: ['HTML5', 'CSS3', 'Responsive Design', 'Flexbox'],
+    description: 'Build beautiful, responsive websites with modern HTML5 and CSS3.'
+  },
+  {
+    id: 'vue201',
+    title: 'Vue.js Progressive Framework',
+    category: 'Frontend',
+    difficulty: 'Intermediate',
+    duration: 48,
+    rating: 4.7,
+    enrollments: 10850,
+    prerequisites: ['js101'],
+    skills: ['Vue.js', 'Vuex', 'Vue Router', 'Composition API'],
+    description: 'Build interactive frontend applications with Vue.js ecosystem.'
+  },
+  {
+    id: 'node301',
+    title: 'Node.js Backend Development',
+    category: 'Backend',
+    difficulty: 'Advanced',
+    duration: 68,
+    rating: 4.8,
+    enrollments: 12400,
+    prerequisites: ['js101'],
+    skills: ['Node.js', 'Express.js', 'MongoDB', 'REST APIs'],
+    description: 'Build scalable backend applications with Node.js and Express framework.'
+  },
+  // Mobile Development
+  {
+    id: 'flutter201',
+    title: 'Flutter Mobile Development',
+    category: 'Mobile',
+    difficulty: 'Intermediate',
+    duration: 62,
+    rating: 4.6,
+    enrollments: 8920,
+    prerequisites: ['cs101'],
+    skills: ['Flutter', 'Dart', 'Mobile UI', 'Cross-platform'],
+    description: 'Create beautiful cross-platform mobile apps with Flutter and Dart.'
+  },
+  {
+    id: 'swift201',
+    title: 'iOS Development with Swift',
+    category: 'Mobile',
+    difficulty: 'Intermediate',
+    duration: 58,
+    rating: 4.7,
+    enrollments: 7340,
+    prerequisites: ['cs101'],
+    skills: ['Swift', 'iOS', 'UIKit', 'SwiftUI'],
+    description: 'Build native iOS applications using Swift and modern iOS frameworks.'
+  },
+  // DevOps & Cloud
+  {
+    id: 'docker201',
+    title: 'Docker & Containerization',
+    category: 'DevOps',
+    difficulty: 'Intermediate',
+    duration: 40,
+    rating: 4.8,
+    enrollments: 11230,
+    prerequisites: [],
+    skills: ['Docker', 'Containerization', 'Docker Compose', 'Microservices'],
+    description: 'Master containerization with Docker for modern application deployment.'
+  },
+  {
+    id: 'aws301',
+    title: 'AWS Cloud Architecture',
+    category: 'Cloud Computing',
+    difficulty: 'Advanced',
+    duration: 85,
+    rating: 4.9,
+    enrollments: 9650,
+    prerequisites: [],
+    skills: ['AWS', 'Cloud Architecture', 'EC2', 'S3', 'Lambda'],
+    description: 'Design and deploy scalable applications on Amazon Web Services.'
+  },
+  {
+    id: 'k8s401',
+    title: 'Kubernetes Orchestration',
+    category: 'DevOps',
+    difficulty: 'Advanced',
+    duration: 72,
+    rating: 4.7,
+    enrollments: 6890,
+    prerequisites: ['docker201'],
+    skills: ['Kubernetes', 'Container Orchestration', 'Helm', 'Service Mesh'],
+    description: 'Master Kubernetes for container orchestration and cloud-native applications.'
+  },
+  // Cybersecurity
+  {
+    id: 'sec101',
+    title: 'Cybersecurity Fundamentals',
+    category: 'Security',
+    difficulty: 'Beginner',
+    duration: 45,
+    rating: 4.6,
+    enrollments: 13670,
+    prerequisites: [],
+    skills: ['Network Security', 'Encryption', 'Risk Assessment', 'Compliance'],
+    description: 'Essential cybersecurity concepts for protecting digital assets.'
+  },
+  {
+    id: 'pen301',
+    title: 'Ethical Hacking & Penetration Testing',
+    category: 'Security',
+    difficulty: 'Advanced',
+    duration: 95,
+    rating: 4.8,
+    enrollments: 5420,
+    prerequisites: ['sec101'],
+    skills: ['Penetration Testing', 'Vulnerability Assessment', 'Kali Linux', 'OWASP'],
+    description: 'Learn ethical hacking techniques and penetration testing methodologies.'
+  },
+  // UI/UX Design
+  {
+    id: 'ux101',
+    title: 'UX Design Principles',
+    category: 'Design',
+    difficulty: 'Beginner',
+    duration: 38,
+    rating: 4.5,
+    enrollments: 15840,
+    prerequisites: [],
+    skills: ['User Research', 'Wireframing', 'Prototyping', 'Usability Testing'],
+    description: 'Learn user experience design principles and research methodologies.'
+  },
+  {
+    id: 'ui201',
+    title: 'Modern UI Design with Figma',
+    category: 'Design',
+    difficulty: 'Intermediate',
+    duration: 52,
+    rating: 4.7,
+    enrollments: 12950,
+    prerequisites: ['ux101'],
+    skills: ['Figma', 'Visual Design', 'Design Systems', 'Prototyping'],
+    description: 'Create stunning user interfaces using Figma and modern design principles.'
+  },
+  // Business & Analytics
+  {
+    id: 'analytics201',
+    title: 'Business Analytics with Excel',
+    category: 'Analytics',
+    difficulty: 'Intermediate',
+    duration: 44,
+    rating: 4.4,
+    enrollments: 18230,
+    prerequisites: [],
+    skills: ['Excel', 'Data Analysis', 'Pivot Tables', 'Business Intelligence'],
+    description: 'Master business analytics and data visualization using Microsoft Excel.'
+  },
+  {
+    id: 'tableau301',
+    title: 'Data Visualization with Tableau',
+    category: 'Analytics',
+    difficulty: 'Advanced',
+    duration: 56,
+    rating: 4.8,
+    enrollments: 8740,
+    prerequisites: ['analytics201'],
+    skills: ['Tableau', 'Data Visualization', 'Dashboard Design', 'Statistical Analysis'],
+    description: 'Create compelling data visualizations and interactive dashboards with Tableau.'
+  },
+  // Game Development
+  {
+    id: 'unity201',
+    title: 'Game Development with Unity',
+    category: 'Game Development',
+    difficulty: 'Intermediate',
+    duration: 78,
+    rating: 4.6,
+    enrollments: 9430,
+    prerequisites: ['cs101'],
+    skills: ['Unity', 'C#', 'Game Physics', '3D Modeling'],
+    description: 'Create engaging games using Unity engine and C# programming.'
+  },
+  {
+    id: 'unreal301',
+    title: 'Unreal Engine Blueprint Programming',
+    category: 'Game Development',
+    difficulty: 'Advanced',
+    duration: 82,
+    rating: 4.7,
+    enrollments: 6280,
+    prerequisites: ['unity201'],
+    skills: ['Unreal Engine', 'Blueprints', 'Game Logic', 'Level Design'],
+    description: 'Master game development with Unreal Engine blueprint visual scripting.'
   }
 ];
 
